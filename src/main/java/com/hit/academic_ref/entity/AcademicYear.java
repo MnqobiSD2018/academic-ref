@@ -2,6 +2,8 @@ package com.hit.academic_ref.entity;
 
 import java.util.List;
 
+import com.fasterxml.jackson.annotation.JsonManagedReference;
+
 import jakarta.persistence.CascadeType;
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
@@ -15,6 +17,7 @@ import lombok.Data;
 @Entity
 @Data  // Lombok: auto-generates getters, setters, toString
 @Table(name = "academic_years")
+
 public class AcademicYear {
 
     @Id
@@ -25,5 +28,7 @@ public class AcademicYear {
     private String year; // e.g. "2023/2024"
 
     @OneToMany(mappedBy = "academicYear", cascade = CascadeType.ALL)
+    @JsonManagedReference
     private List<Project> projects;
+
 }

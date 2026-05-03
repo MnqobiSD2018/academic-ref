@@ -3,6 +3,8 @@ package com.hit.academic_ref.entity;
 
 import java.util.List;
 
+import com.fasterxml.jackson.annotation.JsonBackReference;
+
 import jakarta.persistence.CascadeType;
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
@@ -31,6 +33,7 @@ public class Project {
 
     // Many projects belong to one academic year
     @ManyToOne
+    @JsonBackReference
     @JoinColumn(name = "academic_year_id", nullable = false)
     private AcademicYear academicYear;
 
