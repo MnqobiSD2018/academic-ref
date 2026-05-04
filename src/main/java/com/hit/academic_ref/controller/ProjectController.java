@@ -10,6 +10,7 @@ import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
 import com.hit.academic_ref.entity.Project;
@@ -45,5 +46,13 @@ public class ProjectController {
                                 @RequestBody Map<String, String> body) {
         return projectService.updateStatus(
             projectId, Project.Status.REJECTED, body.get("reason"));
+    }
+
+    // Search projects by title keyword across all years
+    @GetMapping("/search")
+    public List<Project> searchProjects(
+            @RequestParam String keyword,
+            @RequestParam(required = false) Project.Department department) {
+        return projectService.searchProjects(keyword, department);
     }
 }

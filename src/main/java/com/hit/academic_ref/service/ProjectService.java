@@ -42,4 +42,12 @@ public class ProjectService {
         return projectRepository.findByAcademicYearIdAndStatus(
             yearId, Project.Status.APPROVED);
     }
+
+    // Search projects by title keyword, optionally filter by department
+    public List<Project> searchProjects(String keyword, Project.Department department) {
+        if (department != null) {
+            return projectRepository.findByTitleContainingIgnoreCaseAndDepartment(keyword, department);
+        }
+        return projectRepository.findByTitleContainingIgnoreCase(keyword);
+    }
 }
