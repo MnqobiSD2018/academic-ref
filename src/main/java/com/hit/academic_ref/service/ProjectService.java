@@ -28,4 +28,18 @@ public class ProjectService {
         project.setAcademicYear(year);
         return projectRepository.save(project);
     }
+
+    public Project updateStatus(Long projectId, Project.Status status, String reason) {
+    Project project = projectRepository.findById(projectId)
+        .orElseThrow(() -> new RuntimeException("Project not found"));
+    project.setStatus(status);
+    project.setRejectionReason(reason);
+    return projectRepository.save(project);
+}
+
+    // Only return approved projects to general browsing
+    public List<Project> getApprovedProjectsByYear(Long yearId) {
+        return projectRepository.findByAcademicYearIdAndStatus(
+            yearId, Project.Status.APPROVED);
+    }
 }
