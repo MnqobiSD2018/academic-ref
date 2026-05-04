@@ -1,11 +1,13 @@
 package com.hit.academic_ref.controller;
 
 import java.util.List;
+import java.util.Map;
 
 import org.springframework.web.bind.annotation.CrossOrigin;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
@@ -31,5 +33,17 @@ public class ProjectController {
     @PostMapping
     public Project createProject(@PathVariable Long yearId, @RequestBody Project project) {
         return projectService.createProject(yearId, project);
+    }
+
+    @PutMapping("/{projectId}/approve")
+    public Project approveProject(@PathVariable Long projectId) {
+        return projectService.updateStatus(projectId, Project.Status.APPROVED, null);
+    }
+
+    @PutMapping("/{projectId}/reject")
+    public Project rejectProject(@PathVariable Long projectId,
+                                @RequestBody Map<String, String> body) {
+        return projectService.updateStatus(
+            projectId, Project.Status.REJECTED, body.get("reason"));
     }
 }

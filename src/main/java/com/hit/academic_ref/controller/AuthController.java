@@ -1,18 +1,17 @@
 package com.hit.academic_ref.controller;
 
+import java.util.Map;
+
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
-import java.util.Map;
-
-import org.springframework.security.crypto.password.PasswordEncoder;
-
-import com.hit.academic_ref.security.JwtUtil;
 import com.hit.academic_ref.entity.User;
 import com.hit.academic_ref.repository.UserRepository;
+import com.hit.academic_ref.security.JwtUtil;
 
 import lombok.RequiredArgsConstructor;
 

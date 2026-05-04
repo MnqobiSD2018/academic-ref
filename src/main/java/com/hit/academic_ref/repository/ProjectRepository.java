@@ -9,4 +9,18 @@ import com.hit.academic_ref.entity.Project;
 
 public interface ProjectRepository extends JpaRepository<Project, Long> {
     List<Project> findByAcademicYearId(Long yearId); // Spring generates this query automatically from the method name
+
+    // Filter by department within a year
+    List<Project> findByAcademicYearIdAndDepartment(Long yearId, Project.Department department);
+
+    // Filter by status within a year
+    List<Project> findByAcademicYearIdAndStatus(Long academicYearId, Project.Status status);
+
+    // Search by title keyword
+    List<Project> findByTitleContainingIgnoreCase(String keyword);
+
+    // Search by title AND department
+    List<Project> findByTitleContainingIgnoreCaseAndDepartment(
+        String keyword, Project.Department department);
+
 }
