@@ -3,8 +3,6 @@ package com.hit.academic_ref.entity;
 
 import java.util.List;
 
-import com.fasterxml.jackson.annotation.JsonBackReference;
-
 import jakarta.persistence.CascadeType;
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
@@ -35,22 +33,31 @@ public class Project {
 
     // Many projects belong to one academic year
     @ManyToOne
-    @JsonBackReference
     @JoinColumn(name = "academic_year_id", nullable = false)
+    @com.fasterxml.jackson.annotation.JsonBackReference
     private AcademicYear academicYear;
 
     @OneToMany(mappedBy = "project", cascade = CascadeType.ALL)
+    @com.fasterxml.jackson.annotation.JsonManagedReference
     private List<Document> documents;
 
     public enum Department {
-    SOFTWARE_ENGINEERING,
-    INFORMATION_TECHNOLOGY,
-    COMPUTER_SCIENCE,
-    INFORMATION_SECURITY_AND_ASSURANCE
-}
+        SE,
+        IT,
+        CS,
+        ISAA
+    }
     @Enumerated(EnumType.STRING)
     @Column(nullable = false)
     private Department department;
+
+    // Level of the project (HIT200 = year 2, HIT400 = year 4)
+    public enum Level {
+        HIT200, HIT400
+    }
+
+    @Enumerated(EnumType.STRING)
+    private Level level;
 
     // In Project.java add:
     public enum Status {

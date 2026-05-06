@@ -25,8 +25,22 @@ public class DatabaseMigrationConfig {
                     }
                 }
 
-                try (var statement = connection.createStatement()) {
-                    statement.executeUpdate("ALTER TABLE projects ADD COLUMN department VARCHAR(100)");
+                // ensure department column exists
+                try (ResultSet cols = metaData.getColumns(null, null, "projects", "department")) {
+                    if (!cols.next()) {
+                        try (var statement = connection.createStatement()) {
+                            statement.executeUpdate("ALTER TABLE projects ADD COLUMN department VARCHAR(100)");
+                        }
+                    }
+                }
+
+                // ensure level column exists (HIT200 / HIT400)
+                try (ResultSet levelCols = metaData.getColumns(null, null, "projects", "level")) {
+                    if (!levelCols.next()) {
+                        try (var statement = connection.createStatement()) {
+                            statement.executeUpdate("ALTER TABLE projects ADD COLUMN level VARCHAR(100)");
+                        }
+                    }
                 }
             }
         };

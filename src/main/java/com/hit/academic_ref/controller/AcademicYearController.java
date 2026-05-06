@@ -1,6 +1,7 @@
 package com.hit.academic_ref.controller;
 
 import java.util.List;
+import java.util.Map;
 
 import org.springframework.web.bind.annotation.CrossOrigin;
 import org.springframework.web.bind.annotation.DeleteMapping;
@@ -30,12 +31,21 @@ public class AcademicYearController {
     }
 
     @PostMapping
-    public AcademicYear createYear(@RequestBody AcademicYear year) {
+    public AcademicYear createYear(@RequestBody java.util.Map<String, String> body) {
+        AcademicYear year = new AcademicYear();
+        year.setYear(body.get("year"));
         return yearService.createYear(year);
     }
 
+    @GetMapping("/{id}/delete-preview")
+    public Map<String, Object> getDeletePreview(@PathVariable Long id) {
+        return yearService.getDeletePreview(id);
+    }
+
     @DeleteMapping("/{id}")
-    public void deleteYear(@PathVariable Long id) {
-        yearService.deleteYear(id);
+    public void deleteYear(@PathVariable Long id, @RequestBody(required = false) Map<String, Object> body) {
+        String confirmationText = body == null ? null : (String) body.get("confirmationText");
+        boolean deleteProjects = body != null && Boolean.TRUE.equals(body.get("deleteProjects"));
+        yearService.deleteYearSafely(id, confirmationText, deleteProjects);
     }
 }
