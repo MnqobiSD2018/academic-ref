@@ -7,6 +7,7 @@ A Spring Boot backend for managing and searching academic projects at HIT.
 - Supports project document uploads (PDFs).
 - Provides authentication with JWT.
 - Allows project search by keyword, department, and level.
+- Serves the built React frontend from Spring static resources.
 
 ## Tech stack
 - Java 21
@@ -16,14 +17,45 @@ A Spring Boot backend for managing and searching academic projects at HIT.
 - Maven
 
 ## Project status
-- Backend API is available and in progress.
-- Frontend is not available yet.
-- Frontend will be added later in: `src/main/resources/static`.
+- Backend API is available.
+- Frontend is built separately in the `project-nexus` repository and deployed into:
+  - `src/main/resources/static`
+- Backend and frontend are served together from the same Spring Boot app on one port.
+
+## Frontend integration (React + Vite)
+
+### Frontend source project
+- Frontend code lives in: `C:\Users\Samuel Mqobi Dube\Documents\GitHub\project-nexus`
+
+### Build frontend
+From the frontend project directory:
+
+```powershell
+npm install
+npm run build
+```
+
+### Deploy frontend into backend
+Copy all contents of the frontend `dist` folder into:
+
+- `src/main/resources/static`
+
+Important: copy the **contents** of `dist` (not the `dist` folder itself), so this structure exists:
+
+- `src/main/resources/static/index.html`
+- `src/main/resources/static/assets/...`
+- `src/main/resources/static/favicon.ico`
+
+### Routing behavior (SPA refresh support)
+- API endpoints remain under `/api/...`.
+- Frontend routes such as `/login`, `/years`, `/projects/...`, `/search`, and `/admin` are forwarded to `index.html` by `SpaForwardController`.
+- This prevents `404 No static resource ...` errors when refreshing frontend pages.
 
 ## Run locally
 1. Create a PostgreSQL database named `academic_refs`.
 2. Update database credentials in `src/main/resources/application.properties`.
-3. Start the app:
+3. Ensure frontend build is copied to `src/main/resources/static` (see section above).
+4. Start the app:
 
 ```bash
 ./mvnw spring-boot:run
@@ -41,4 +73,4 @@ Default server URL: http://localhost:8080
 - Main API routes use `/api/...`
 
 ## Notes
-This README will be updated again once the frontend is added.
+- If UI changes do not appear, rebuild frontend, recopy `dist` contents into `static`, restart backend, and hard refresh the browser (`Ctrl+F5`).
